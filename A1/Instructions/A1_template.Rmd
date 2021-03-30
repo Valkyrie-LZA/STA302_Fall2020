@@ -1,0 +1,23 @@
+---
+title: "My Assignment 1 Title (.)"
+author: "SS1234 (.)"
+date: "September 26, 2020 (.)"
+output: html_document
+---
+
+## I. Introduction 
+
+Parts marked with (.) need updating. 
+Part 1 (.)
+
+## II. Exploratory Data Analysis
+
+Part 2 (.)
+
+## III. Methods and Model
+
+Part 3 (.)
+
+## IV. Discussions and Limitations
+
+Part 4 (.)

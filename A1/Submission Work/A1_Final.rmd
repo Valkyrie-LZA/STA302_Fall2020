@@ -1,0 +1,112 @@
+---
+title: " Research on the relationship between forearm length and height (0280)"
+author: "SS1234 (.)"
+date: "September 26, 2020 (.)"
+output: html_document
+---
+
+
+## I. Introduction 
+
+- the title of assignment #1 is "Research on the relationship between forearm 
+length and height".
+
+- I randomly select the data from 10 adults in the class in the file provided by
+by September 17.
+```{r}
+dataz<-read.csv("a20a1data.csv")
+set.seed(0280)
+data0280<-sample_n(dataz,10,replace=FALSE)
+data0280
+```
+
+- The explanatory variable is the height and the response variable is the forearm length since I believe higher people tend to have longer forearm length and want to explore the relationship between them.
+
+## II. Exploratory Data Analysis
+
+```{r}
+library(tidyverse)
+
+ggplot(data0280,aes(x=height, y=forearm))+
+  geom_point()+
+  labs(title="Scatterplot of forearm length / height (0280)",
+       x="height", y = "forearm length")+
+  theme_classic() +
+  geom_smooth(method=lm,  linetype="solid",
+             color="darkred", fill="blue")
+
+ggplot(data=data0280, aes(forearm)) + 
+  geom_histogram(binwidth = 1) +
+  ggtitle("Distribution of forearm length")
+
+ggplot(data0280, aes(x=forearm)) + 
+  geom_boxplot() +
+  ggtitle("boxplot of forearm length v.s height (0280)")
+
+```
+- my response variable non-normal as can be discovered from the histogram since 
+the graph of histogram are right-skewed. 
+
+```{r}
+summary(data0280)
+summarise(data0280,var=var(forearm))
+```
+- The median forearm length is 23.75 cm, the mean forearm length is 23.66 cm.
+  The variance for the length of forearm is 58.28267.
+  There are two unusual data point which are identifiable from the boxplot which 
+  is the 9.2 cm and the 40.0 cm of the forearm length.
+
+
+
+## III. Methods and Model
+
+```{r}
+RL<-lm(forearm~height, data=data0280)
+RL
+```
+- the model of the regression line  can be seen as ŷ = -39.3510 + 0.3668x
+
+- the regression parameters are not zero
+
+- slope estimate: when height increases by 1 cm, the corresponding average change    in the forearm length is 0.3668 cm
+  intercept estimate: the average length of forearm when the height is equal to
+  0 cm. However, this does not have any practical meaning since the height of
+  human being will not be 0 cm.
+   
+
+
+## IV. Discussions and Limitations
+- Disability, ages, races, are all lurking variable for the forearm length.
+  By identifying the scatterplot, it's not likely that the data are in a linear
+  relationship because of the two unusual point and my fit line is not capable 
+  of catching these points. When studying the how the forearm length are being 
+  affected by height, we want to focus on healthy people who do not suffer from
+  disability and genetic mutations. Thus by removing the outliers and               reconstructing the graph, I am getting a new fitted line below which is better.
+  
+```{r}
+data2<-filter(data0280,id!="2")
+data3<-filter(data0280,id!="319")
+ggplot(data3,aes(x=height, y=forearm))+
+  geom_point()+
+  labs(title="Scatterplot of forearm length / height (0280)(2)",
+       x="height", y = "forearm length")+
+  theme_classic() +
+  geom_smooth(method=lm,  linetype="solid",
+             color="darkred", fill="blue")
+```
+  
+- Another pair of variables that can be used to explore a simple linear 
+  regression model is age and forearm length. The response variable is forearm
+  length and the explanatory variable is the age.
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
