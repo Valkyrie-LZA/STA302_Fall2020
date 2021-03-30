@@ -1,0 +1,138 @@
+---
+title: "The MLR research on sale price and its predictors."
+author: "Zian Lu, Id 1004710280 "
+date: "December 1, 2020 "
+output:
+  pdf_document: default
+  word_document: default
+---
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
+library(tidyverse)
+library(skimr)
+library(knitr)
+```
+
+## I. Data Wrangling
+### a)
+```{r,}
+dataz=read.csv("real203.csv")
+set.seed(1004710280)
+data1z<-sample_n(dataz,150,FALSE)            #pick 150 random sample
+data1z$ID                                    #show the ID of sample selected
+```
+
+### b)
+```{r, echo=FALSE}
+data2z<-mutate(data1z,lotsize=lotwidth*lotlength) #create the lotsize predictor
+data3z<-select(data2z,-c(lotwidth,lotlength))     #remove lotwidth and lotlength
+```
+- lotsize=lotwidth*lotlength
+
+### c)
+```{r, include=FALSE}
+summary(data3z)
+data4z<-select(data3z,-maxsqfoot)                 #remove maxsqfoot predictor
+datafinalZ<-na.omit(data4z)                       #remove cases with NA
+attach(datafinalZ)
+```
+- I choose to remove the predictor maxsqfoot because it has 90 NA data points out of 150 cases and I believe the remaining 60 cases cannot reveal the overall maxsqfoot level of detached house.Another reason is that the meaning of maxsqfoot and lotsize are quite similar so one should be enough and lotsize should be better since it has fewer NA values.
+- I removed 5 cases who has missing value on parking, 1 case with missing value on taxes and 2 cases with missing cases on lotsize
+
+## II. Exploratory Data Analysis
+### a)
+```{r,include=FALSE}
+str(datafinalZ)           #get an overview of the finalized data
+```
+- categorical variable: Location
+- discrete variable: bedroom, bathroom, parking
+- continuous variable: sale, list, taxes, lotsize
+
+### b)
+```{r}
+numericquantitative=cbind(sale,list, bedroom, bathroom, parking, taxes,lotsize) 
+round(cor(numericquantitative), 4)              #correlation matrix for all quantitative variables(week10 rmd)
+pairs(sale~list+bedroom+bathroom+parking+taxes+lotsize,
+      data=datafinalZ,gap=0.4,cex.labels=0.85,main="Scatterplot matrix for all quantitative variables(0280)")                                                         #scatterplot matrix for all quantitative variables(week10 rmd)
+```
+- The quantitative predictor for sale price rank(in terms of  correlation coefficient from highest to lowest):
+list, taxes, bathroom, bedroom, lotsize, parking.
+
+### c)
+```{r}
+fullmodelhomebuying0280<-lm(sale~ list+ bedroom+ bathroom+ taxes+ parking+ lotsize+ location, data=datafinalZ)#derive the MLR for the model(week11 rmd)
+StanResZ <- rstandard(fullmodelhomebuying0280)                                                                #compute the standard residual(week8 rmd)
+plot(lotsize,StanResZ,xlab="lotsize",ylab="Standardized Residuals",main="Standardized Residuals plot(0280)")#get the standardized residual plot(week8 rmd)
+abline(0,0)
+```
+- Based on the scatterplot, the predictor lotsize strongly violated the assumption of constant variance.
+- By checking the standardized residual plot of lotsize, it turns out that there's a cone pattern at y=o and thus demonstrates that the constant variance assumption is not satisfied.
+
+
+
+## III. Methods and Model
+### i)
+```{r}
+summary(fullmodelhomebuying0280)
+```
+- list,taxes,parking and location are significant since there p-value are all smaller than the cut off 5%
+- the coefficient of the list price means for every 1 dollar increase in the list price, the sale price of detached house increase by 8.131e-01 on average.
+- the coefficient of the taxes means for every 1 dollar increase in the taxes, the sale price of detached house increase by 2.166e+01 on average.
+- the coefficient of the number of parking means for every 1 parking slot increase in the number of parking, the sale price of detached house decrease by 1.812e+04 on average.
+- the coefficient of the locationT means holding every other predictors constant, the average sale price of detached house in Toronto is 1.071e+05 higher than the sale price in Mississauga.
+
+### ii)
+```{r}
+back1=step(fullmodelhomebuying0280, direction = "backward")
+```
+The final model is
+$$ 
+\hat{sale price} = 5.759*10^4+0.813*listprice+21.666*taxes-1.812*10^4*parking+1.071*10^5*locationT  
+$$
+- locationT=1 for location is Toronto otherwise locationT=0 for location is Mississauga
+- The results are consistent with those in part i
+
+### iii)
+```{r}
+back2=step(fullmodelhomebuying0280, direction = "backward",k=log(142))
+```
+- The final model is 
+$$ 
+\hat{sale price} = 5.759*10^4+0.813*listprice+21.666*taxes+1.071*10^5*locationT  
+$$
+- The results are not consistent with those in part i
+- The reason that the results are different from the difference in the evaluation of different method. Since BiC penalize complex model more heavily than AIC, thus favors simpler models than AIC and this explains why there are fewer predictors in ii than i.
+
+
+## IV. Discussions and Limitations
+### a)
+```{r}
+par(mfrow=c(2,2))
+modeliii<-lm(sale ~ list + taxes + location,data=datafinalZ)
+plot(modeliii)
+```
+
+### b)
+- residuals vs fitted plot: there is no pattern around the 0 horizontal line and points spread randomly
+- normal QQplot: a majority of points fall on the 45 degree line and thus the normal error assumption are satisfied
+- scale-location plot: a random scatter of points around the horizontal axis, no pattern or trend are found
+- residuals vs leverage:there are no points that lies outside of the red line region indicating that there are no outliers or influential points
+
+### c)
+- Discuss whether there are other predictors and if we add them in, will our model becomes better or not. For example, the age of the detached house may also affect the sale price. Added variable plot are helpful when considering the introduction of an additional predictor variable.
+- Use the variance inflation factors method to decide whether the multicollinearity exist between existing model.
+- We could use the global F-test and Individual t-test to help confirm the correctness of AIC and BIC
+- Other methods, for example, penalized regression,cross validation and the data of adjusted R square can be used to confirm the accuracy of model. Check the difference between the model generated by different model and see which one is. better
+
+
+
+
+
+
+
+
+
+
+
+
+

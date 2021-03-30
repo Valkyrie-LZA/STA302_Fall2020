@@ -1,0 +1,31 @@
+---
+title: "My Assignment 3 Title (.)"
+author: "Shivon Sue-Chee, Id 1001234567 (.)"
+date: "December 1, 2020 (.)"
+output: word_document
+---
+
+## I. Data Wrangling
+Parts marked with (.) need updating. 
+
+Part 1 (.)
+
+Hide codes where appropriate
+
+## I. Exploratory Data Analysis
+ 
+Part 2 (.)
+
+Table (.)
+
+## II. Methods and Model
+
+Part 3 (.)
+
+Table (.)
+
+## III. Discussions and Limitations
+
+Part 4 (.)
+
+Plot (.)
