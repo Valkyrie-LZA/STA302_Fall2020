@@ -1,0 +1,136 @@
+---
+title: "A research on the price and tax for detached house during COVID-19(0280)"
+author: "Z.L0280 "
+date: "October 24, 2020 (.)"
+output:
+  pdf_document: default
+  html_document: default
+---
+```{r setup, include=FALSE,echo = FALSE}
+knitr::opts_chunk$set(message = FALSE, echo = FALSE)
+library(tidyverse)
+```
+
+
+```{r}
+data=read.csv("real20.csv")
+set.seed(0280)
+data1<-sample_n(data,200,replace=FALSE)      #pick 200 random sample
+attach(data1)
+```
+
+
+## I. Exploratory Data Analysis
+```{r,echo=FALSE}
+boxplot0280=boxplot(sold,
+                    names=c("sold"),
+                    main="boxplot for sold price of detached houses(0280)",
+                    ylab="pirice sold price")
+max(list)
+min(list)
+max(sold)
+min(sold)
+data1[list==84.99,]                            #find out where the max/min is in the data
+data1[list==0.699,]
+data1[sold==5.1,]
+data1[sold==0.672,]
+datafinal0280<-data1[-c(5,70),]               #remove the two wierd data point
+```
+a)
+I choose to remove the two cases which are listed at 84.99M and sold at 1.085M and listed at 6.799M and sold at 0.672M because the huge difference in the price reveals the fact that at least one of them are not made seriously and would affect the accuracy of the research result.
+
+b)
+```{r,echo=FALSE}
+color = rep(NA, length=length(datafinal0280$location))
+color[which(datafinal0280$location=="T")] = "blue"
+color[which(datafinal0280$location=="M")] = "red"
+
+plot(datafinal0280$list,datafinal0280$sold,  main = "Scatterplot of sold vs list(0280)",
+     xlab = "list price in million", ylab = "sold price in million",col=c(color))
+legend(x=1,y=5,legend=c('T','M'),fill=c('blue', 'red'))                         #construct scattterplot for sold and list
+
+plot(datafinal0280$tax,datafinal0280$sold,  main = "Scatterplot of sold vs tax(0280)",
+     xlab = " tax in dollor", ylab = "sold price in million",col=c(color))
+legend(x=1,y=5,legend=c('T','M'),fill=c('blue', 'red'))                         #construct scattterplot for sold and tax
+```
+
+c) 
+1)Since I believe the sold price can better demonstrate the price level over a certain area, thus I choose to use the boxplot of sold price to  discover the spread of price. In the boxplot, it's clear that the majority  sold price of detached house during Covid-19 fall between 1 to 2 million. Several outliers can be seen in the area which the price is greater than approximately 3.8 million.
+
+
+2)The scatterplot named "scatterplot of sold vs list" demonstrates that the sold price and the list price follows a strong linear relationship. Generally speaking, the sold price and list price in T-neighborhood are higher than that of M-neighborhood.Additionally, one obvious outlier with list price at 3M is worth notetaking.
+
+3)The scatterplot named "scatterplot of sold vs tax" indicates that the sold price and tax follows a weak linear relationship.Note that with same amount of tax being charged, the sold price of detached house in T-neighborhood are usually higher than that of M-neighborhood.Generally, the higher the sold price is for a detached house, the greater the tax will be charged.Additionally, more outliers and leverage point are identified.
+
+
+## II. Methods and Model
+```{r,echo=FALSE}
+mod10280z<-lm(datafinal0280$sold~datafinal0280$list)         #establish the regression model
+summary(mod10280z)
+var10280z<-0.1774^2
+confint(mod10280z,level = 0.95)        #find the confidence interval
+var10280z
+```
+
+```{r,echo=FALSE}
+dataMZZZ<-datafinal0280[datafinal0280$location=="M",]  #pick only M-neighborhood
+modMZZZ<-lm(dataMZZZ$sold~dataMZZZ$list)      #establish the regression model
+summary(modMZZZ)
+varM1ZZZ<-0.1019^2
+confint(modMZZZ,level = 0.95)      #find the confidence interval
+varM1ZZZ
+```
+
+```{r,echo=FALSE}
+dataT0280<-datafinal0280[datafinal0280$location=="T",]#pick only T-neighborhood
+modT0280<-lm(dataT0280$sold~dataT0280$list)       #establish the regression model
+summary(modT0280)
+varT10280<-0.2183^2
+confint(modT0280,level = 0.95)          #find the confidence interval
+varT10280
+```
+Table (.)
+```{r,echo=FALSE}
+table0280 <- matrix(c(0.9654,0.9858,0.9502,0.15533,0.13941,0.19313,0.90169,0.88974,0.89706,0.03147,0.01038,0.04765,2e-16,2e-16,2e-16,"(0.87763,0.92575)","(0.86708,0.91239)","(0.8575,0.9365)"),ncol=3,byrow=TRUE)
+colnames(table0280) <- c("All","M-Neighbour","T-Neighbour")
+rownames(table0280) <- c("R^2","estimated intercept","estimated slope","estimated variance of error","p-value","95% CI")
+table0280 <- as.table(table0280)    #form the table
+table0280
+```
+b) R^2 in three cases are a little bit different from each other. The reason for this to happen is that there are more outliers in the data T-Neighborhood than T-neighborhood. There are more data points in T-neighborhood one and the house price in Toronto are more dispersed thus leading to a less fit linear relationship.
+
+c) In order to apply a two-sample t-test. It's statistical assumptions must be satisfied.
+1)Data values must be independent.
+2) Data in each group are normally distributed. 
+3)The variance from two independent data are equal.
+Then check it one by one.The price of detached house are not independent because Mississauga and Toronto are close to each other that it serves as a satellite city of Toronto thus the house price in Mississauga is greatly affected by the house price in Toronto. Secondly, as can be discovered from the scatterplot above, all the plots are right-skewed which is a violation of the trait, bell shape of a normal distribution. Thirdly, from the variance we calculated in the above model, the variance from T-neighborhood is 0.04765 while the variance for M-neighborhood is 0.01038 which are not equal. In conclusion, neither of the assumptions are followed thus we can't use the pooled two-sample t-test.
+
+## III. Discussions and Limitations
+
+```{r}
+par(mfrow=c(1,2))
+plot(dataMZZZ$sold, modMZZZ$residuals, ylab="Residuals", xlab="sold price for M-neighborhood", main="Residual plot for M(0280)")
+abline(h=0, lty="dashed")       #get residual plot for residual vs.fitted value
+qqnorm(residuals(modMZZZ))         #get QQplot
+qqline(residuals(modMZZZ))
+```
+a)I will choose the fitted model for M-neighborhood since it has the greatest  R^2 of all 3 indicates that it has the highest percentage of the dependent variable variation that a linear model explains. Additionally, it has the least estimated variance of error which further proves the regression model in M-neighborhood is the best fit.
+
+
+
+b)Under normal error SLR assumptions,4 assumptions have to be satisfied. 
+1) A simple linear model is appropriate. 2)The errors are uncorrelated. 4)The errors have constant variance. 4)The errors are Normally distributed.
+Now I will check if they follows the assumption. By the residual plot for residuals vs fitted value, I conclude it's a linear model since there is no pattern. For the second one, due to limitation of plot I can't check it right here. Thirdly, still by the residual plot, the variance are not constant that it is either increasing or decreasing which the plot demonstrates a fanning pattern. Lastly, by QQplot, it's clear that the errors are not following the normal distribution which is another violation of the assumption.
+
+
+c) Two potential numeric predictors can be the size of the detached house and the time period of the detached house since its constructed.Population in the city is also a considerable numeric predictors.
+
+
+
+
+
+
+
+
+
+
