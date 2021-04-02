@@ -1,4 +1,6 @@
 # STA302 Fall2020
+Under the Instruction by Dr.Shivon Sue-Chee.
+
 This repo contains my work for the course, STA302: Method of Data Analysis I at University of Toronto.
 
 # Table of Contents
