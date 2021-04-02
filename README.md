@@ -24,19 +24,20 @@ Data obtained
 
 Please see rmd and/or pdf under the folder submission work for more report and analysis details.
 
-## Mixed Assessment I
+## Assignment 2
 Background info
 
-Wrangling the fictional crew member data on the starfleet and carry out statistical Analysis to better understand the productivity abroad on the fleet.
+Prices for detached houses have been at an all-time high during the COVID-19 period and it is of the public's interest to establish a simple linear model that home buyers can use to determine the expected sale price of detached-house in Toronro and Mississauga.
 
 Tasks ofinterest
-* Name of ship, communication officer,number of crews
-* Relationship between prodcutivity and duty shift
-* Excluding the effect of rank, position, division, sub-division or gender and adjust analysis to team size
-* Find out who spotted plants from the greatest number of different planets or systemsin the hotel gardens.
+* Plot the data and two scatterplots about list price and taxes.
+* Carry out three linear regressions for sale price from list price, one for all data, one for Mississauga and one for Toronto.
+* Intepret the estimate of intercept, slope and R square, discuss the significance of the model.
+* Indentify the potiential violations against the SLR assumptions.
 
 Data obtained
-* randomNames package and themyStarshippackage from GitHub
+* Toronto Real Estate Board(TREB)
+
 
 Please see rmd and/or pdf under the folder submission work for more report and analysis details.
 	
