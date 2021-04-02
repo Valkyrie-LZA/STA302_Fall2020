@@ -7,7 +7,7 @@ This repo contains my work for the course, STA302: Method of Data Analysis I at 
 * [Assignment III](#Assignment-III)
 
 
-## Assignment 1
+## Assignment I
 Background info
 
 Explore the data collected in class to study the relationship between the forearm length and the height of adults.
@@ -24,7 +24,7 @@ Data obtained
 
 Please see rmd and/or pdf under the folder submission work for more report and analysis details.
 
-## Assignment 2
+## Assignment II
 Background info
 
 Prices for detached houses have been at an all-time high during the COVID-19 period and it is of the public's interest to establish a simple linear model that home buyers can use to determine the expected sale price of detached-house in Toronro and Mississauga.
