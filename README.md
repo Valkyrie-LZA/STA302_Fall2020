@@ -41,11 +41,23 @@ Data obtained
 
 Please see rmd and/or pdf under the folder submission work for more report and analysis details.
 	
-## Mixed Assessment II
-To run this project, one needs to install the following packages for data manipulation and visualization:
+## Assignment III
+Background info
 
-```
-library(tidyverse)
-library(dplyr)
-```
+A further research on the Assignment II in a more complex way by establishing complex multi linear regression model.
+
+Tasks of interest
+* Merge variables and remove bad cases and predictors to clean data.
+* Distinguish categorical, discrete and continuous variables and plot the pairwise correlations and scaterplot matrix.
+* Apply AIC and BIC methods to decide the best model.
+* Plot the 4 diagnostic plots and discuss the violations against the MLR assumptions.
+
+Data obtained
+* Toronto Real Estate Board(TREB)
+
+
+Please see rmd and/or pdf under the folder submission work for more report and analysis details.
+
+
+
 :)
