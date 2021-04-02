@@ -7,21 +7,20 @@ This repo contains my work for the course, STA302: Method of Data Analysis I at 
 * [Assignment III](#Assignment-III)
 
 
-## Data Exploration
+## Assignment 1
 Background info
 
-Wrangling the most up-to-date COVID data for the City of Toronto and constructing various plots to analyize the following things of interest. 
+Explore the data collected in class to study the relationship between the forearm length and the height of adults.
 
 Tasks ofinterest
-* Daily increasing cases 
-* Outbreak type
-* Percentage of 18 to 64 year-olds low income group in Toronto’s 140 neighbourhoods.
-* Number of COVID-19 cases per 100,000 people in each neighbourhood.
-* Correlation between cases, income group and neighbourhood.
+* Explore the data and specify the explanatory and response variable.
+* Given plots to overview the data and decide on its normality.
+* Remove outlier and fit the data with a linear regression model.
+* Interpret the estimates of regression paramaters and identify the lurking variable.
+* Indentify other possible variables for the linear regression model.
 
 Data obtained
-* Ontario Ministry of Health, Integrated Public Health Information System 
-* CORES & Census Profile 98−316−X2016001 via OpenData Toronto
+* The forearm length and height measurements in centimeters of 9 or 10 or 11 adults of the class.
 
 Please see rmd and/or pdf under the folder submission work for more report and analysis details.
 
